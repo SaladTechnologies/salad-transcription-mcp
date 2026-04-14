@@ -1,0 +1,1 @@
+"""Salad Transcription MCP server."""
