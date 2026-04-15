@@ -130,23 +130,18 @@ mcpServers:
       SALAD_ORG_NAME: "your-org-name"
 ```
 
-**Running from WSL on Windows:** VS Code runs in the Windows environment, so `uvx` must be in the Windows PATH. If you're developing in WSL, point directly at the venv Python instead and use `WSLENV` to forward the credentials into WSL:
+**Running from WSL on Windows:** VS Code runs in the Windows environment, so `uvx` must be in the Windows PATH. If you're developing in WSL, use `wsl bash -c` and inline the credentials directly — this is more reliable than WSLENV, which depends on inheritance through the Continue process:
 
 ```yaml
 mcpServers:
   - name: Transcription
     command: wsl
     args:
-      - /home/<your-user>/projects/salad-transcription-mcp/salad-transcription-mcp/.venv/bin/python
-      - -m
-      - salad_transcription_mcp
-    env:
-      SALAD_API_KEY: "your-api-key"
-      SALAD_ORG_NAME: "your-org-name"
-      WSLENV: "SALAD_API_KEY/u:SALAD_ORG_NAME/u"
+      - bash
+      - -c
+      - "SALAD_API_KEY=your-api-key SALAD_ORG_NAME=your-org-name /home/<your-user>/path/to/.venv/bin/python -m salad_transcription_mcp"
+    env: {}
 ```
-
-`WSLENV` tells Windows to forward the listed variables into the WSL process. Without it the server starts but can't read the credentials and exits immediately.
 
 ### Any MCP-compatible client (generic stdio config)
 
